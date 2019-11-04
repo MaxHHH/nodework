@@ -113,13 +113,20 @@
     $("#login").click(function(){
         var username = $('#username').val();
         var pwd = $('#pwd').val();
-        $.post("/getlogin", {username, pwd}, function(data) {
-            if (data == true) {
-                window.location = "/listManager";
-            } else (data == false){
-                alert('用户名或密码错误！');
-            }
-        });
+        if(username == '' || pwd == '') {
+            alert("用户名或密码不能为空！");
+        } else {
+            console.log(username);
+            console.log(pwd);
+            $.post("/getlogin", {'username':username, 'password':pwd}, function(d) {
+                var data = JSON.stringify(d);
+                if (data == true) {
+                    window.location = "/listManager";
+                } else {
+                    alert('用户名或密码错误！');
+                }
+            });
+        }
     })
 
     
