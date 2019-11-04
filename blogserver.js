@@ -100,11 +100,34 @@ function getDetail(res) {
 }
 
 function getlogin(req,res) {
-    var urlObj = url.parse(req.url);
-    if(urlObj.query.username == userList[0].username &&
-       urlObj.query.pwd == userList[0].pwd){
-           var result = 
-       }
+    var postpwd = "";
+    var data;
+    req.on("data", function(chunk) {
+        postData += chunk;
+    });
+    req.on("end", function() {
+        var username = params.username;
+        var pwd = params.pwd;
+        var params = queryString.parse(postpwd);
+        var i = 0;
+        for ( i = 0; i < userList.length; i++) {
+            if (userList[i].username == username && userList[i].pwd == pwd) {
+                data = true;
+                res.writeHead(200, {
+                    "Content-Type": "text/plain"
+                });
+                res.end(JSON.stringify(data));
+                return;
+            } else {
+                data = false;
+                res.writeHead(200, {
+                    "Content-Type": "text/plain"
+                });
+                res.end(JSON.stringify(data));
+            }
+        }
+    });
+
 }
 
 
